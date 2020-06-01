@@ -1,0 +1,145 @@
+﻿<link href="~/Content/Home/font-awesome.min.css" rel="stylesheet" />
+<link href="~/Content/Home/HomePage.css" rel="stylesheet" />
+
+<div id="home">
+    <div id="full-width" class="owl-carousel owl-theme home-hero">
+        <div class="text-center item slider-01 display-table overlay">
+            <div class="display-table-cell">
+                <div class="big-tagline text-center">
+                    <h2>
+                        <small style="font-size:27px; opacity:.7;">ARoomInterior</small><br>
+                        @Resources.Home.Header1
+                    </h2>
+                    <p class="lead"><strong style="font-style:italic">@Resources.Home.Strong1</strong> @Resources.Home.Sub11<br /> @Resources.Home.Sub12.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center item slider-02 display-table overlay">
+            <div class="display-table-cell">
+                <div class="big-tagline text-center">
+                    <h2>
+                        <small style="font-size:27px; opacity:.7;">ARoomInterior</small><br>
+                        @Resources.Home.Header2
+                    </h2>
+                    <p class="lead"><strong style="font-style:italic">@Resources.Home.Strong2</strong> @Resources.Home.Sub21<br />@Resources.Home.Sub22.</p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center item slider-03 display-table overlay">
+            <div class="display-table-cell">
+                <div class="big-tagline text-center">
+                    <h2>
+                        <small style="font-size:27px; opacity:.7;">ARoomInterior</small><br>
+                        @Resources.Home.Header3
+                    </h2>
+                    <p class="lead"><strong style="font-style: italic">@Resources.Home.Strong3</strong> @Resources.Home.Sub31<br /> @Resources.Home.Sub32.</p>
+                    @*<a href="#" class="btn btn-light btn-radius btn-brd grd1 effect-1 butn">Contact US</a>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-left:20px; margin-right:20px; margin-top:15px">
+    <div class="col-md-4" style="padding:20px">
+        <a class="web list-group-item list-group-item-action flex-column align-items-start" style="padding:0px 20px 20px 20px; min-height:300px" href="/Projects/Add">
+            <img src="~/New/web.png" class="colimage webanim" style="width: 80px; height: 80px; margin-top:15px" />
+            <h2 class="card-title" style="text-align:center; margin-bottom:0px">@Resources.Home.WebHeader</h2>
+            <p style="text-align:center; margin-bottom:0px; margin-top:auto;">
+                @Resources.Home.WebMessage
+            </p>
+        </a>
+    </div>
+
+    <div class="col-md-4" style="padding:20px">
+        <a class="robot list-group-item list-group-item-action flex-column align-items-start" style="padding:0px 20px 20px 20px; min-height:300px" href="#androidapp">
+            <img src="~/New/android1.png" class="colimage robotanim" style="width: 100px; height: 100px; margin-top:-5px" />
+            <h2 class="card-title" style="text-align:center; margin-bottom:0px">@Resources.Home.MobileHeader</h2>
+            <p style="text-align:center; margin-bottom:0px; margin-top:auto">
+                @Resources.Home.MobileMessage
+            </p>
+        </a>
+    </div>
+
+    <div class="col-md-4" style="padding:20px">
+        <a class="iot list-group-item list-group-item-action flex-column align-items-start" style="padding:0px 20px 20px 20px; min-height:300px" href="#iotbuy">
+            <img src="~/New/iot3.png" class="colimage iotanim" style="width: 80px; height: 80px; margin-top:15px" />
+            <h2 class="card-title" style="text-align:center; margin-bottom:0px">@Resources.Home.IotHeader</h2>
+            <p style="text-align:center; margin-bottom:0px; margin-top:auto">
+                @Resources.Home.IotMessage
+            </p>
+        </a>
+    </div>
+</div>
+
+<style>
+    .web:hover .webanim {
+        -webkit-animation: webchange linear 3s infinite;
+    }
+
+    @@-webkit-keyframes webchange {
+        to {
+            transform: rotateY(360deg);
+        }
+    }
+
+    .iot:hover .iotanim {
+        -webkit-animation: iotchange linear 2s infinite;
+    }
+
+    @@-webkit-keyframes iotchange {
+        0% {
+            content: url(../../New/iot1.png);
+        }
+
+        33% {
+            content: url(../../New/iot2.png);
+        }
+
+        66% {
+            content: url(../../New/iot3.png);
+        }
+
+        100% {
+            content: url(../../New/iot1.png);
+        }
+    }
+
+    .robotanim {
+        -webkit-animation: robotchange linear 60s 1; /*43200s*/
+        animation-fill-mode: forwards;
+    }
+
+    .robot:hover .robotanim {
+        content: url(../../New/android-.png);
+        animation: none;
+    }
+
+    @@-webkit-keyframes robotchange {
+        20% {
+            content: url(../../New/android2.png);
+        }
+
+        60% {
+            content: url(../../New/android3.png);
+        }
+
+        100% {
+            content: url(../../New/android4.png);
+        }
+    }
+
+    .colimage {
+        display: table;
+        margin: 0 auto;
+    }
+
+    .container {
+        width: 100% !important;
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        margin: 0px !important;
+        align-self: center !important;
+        max-width: 100% !important;
+    }
+</style>

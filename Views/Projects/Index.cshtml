@@ -1,0 +1,73 @@
+@{
+    ViewBag.Title = Resources.Projects.Title;
+}
+<h2 style="margin-top:6px">@ViewBag.Title.</h2>
+<h4>@Resources.Projects.Header</h4>
+<hr />
+@Html.EJS().Grid("DataGrid").DataSource((IEnumerable<object>)ViewBag.dataSource).AllowResizing(true).AllowSorting().AllowFiltering().AllowExcelExport().Columns(col =>
+{
+    col.Field("Name").IsPrimaryKey(true).HeaderText(Resources.Projects.Name).Add();
+    col.Field("Description").HeaderText(Resources.Projects.Description).Add();
+    col.Field("UserName").HeaderText(Resources.Projects.Customer).Add();
+}).AllowPaging().PageSettings(page => page.PageCount(4).PageSizes(true)).Toolbar(new List<string>() { "Add", "Search", "ExcelExport" }).EditSettings(edit => { edit.AllowAdding(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal); }).Locale("grid").FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu); }).AllowSelection().SelectionSettings(select => select.Type(Syncfusion.EJ2.Grids.SelectionType.Single)).ToolbarClick("toolbarclick").RowSelected("rowSelected").Render()
+
+<style>
+    .e-grid .e-pager .e-currentitem, .e-pager .e-currentitem:hover {
+        background-color: #EB6864;
+    }
+</style>
+
+<script>
+    function toolbarclick(args) {
+        if (args.item.id === this.element.id + '_excelexport') {
+            this.excelExport();
+        }
+        if (args.item.id === this.element.id + '_add') {
+            window.location.replace(window.location.origin + "/Projects/Add");
+        }
+    }
+    function rowSelected(args) {
+        var grid = document.getElementById("DataGrid").ej2_instances[0];
+        window.location.replace(window.location.origin + "/Projects/Detail?selectedName=" + grid.getSelectedRecords()[0].Name);
+    }
+    ej.base.L10n.load({
+        'grid': {
+            'grid': {
+                'EmptyRecord': '@Resources.Grid.EmptyRecord',
+                'GroupDropArea': '@Resources.Grid.GroupDropArea',
+                'UnGroup': '@Resources.Grid.UnGroup',
+                'EmptyDataSourceError': '@Resources.Grid.EmptyDataSourceError',
+                'Item': '@Resources.Grid.Item',
+                'Items': '@Resources.Grid.Items',
+                'Excelexport': '@Resources.Grid.Excelexport',
+                'FilterButton': '@Resources.Grid.FilterButton',
+                'ClearButton': '@Resources.Grid.ClearButton',
+                'StartsWith': '@Resources.Grid.StartsWith',
+                'EndsWith': '@Resources.Grid.EndsWith',
+                'Contains': '@Resources.Grid.Contains',
+                'Equal': '@Resources.Grid.Equal',
+                'NotEqual': '@Resources.Grid.NotEqual',
+                'LessThan': '@Resources.Grid.LessThan',
+                'LessThanOrEqual': '@Resources.Grid.LessThanOrEqual',
+                'GreaterThan': '@Resources.Grid.GreaterThan',
+                'GreaterThanOrEqual': '@Resources.Grid.GreaterThanOrEqual',
+                'EnterValue': '@Resources.Grid.EnterValue',
+                'Search': '@Resources.Grid.Search',
+                'Add': '@Resources.Grid.Create'
+            },
+            'pager': {
+                'currentPageInfo': '@Resources.Pager.currentPageInfo',
+                'totalItemsInfo': '@Resources.Pager.totalItemsInfo',
+                'firstPageTooltip': '@Resources.Pager.firstPageTooltip',
+                'lastPageTooltip': '@Resources.Pager.lastPageTooltip',
+                'nextPageTooltip': '@Resources.Pager.nextPageTooltip',
+                'previousPageTooltip': '@Resources.Pager.previousPageTooltip',
+                'nextPagerTooltip': '@Resources.Pager.nextPagerTooltip',
+                'previousPagerTooltip': '@Resources.Pager.previousPagerTooltip',
+                'pagerDropDown': '@Resources.Pager.pagerDropDown',
+                'All': '@Resources.Pager.All',
+                'pagerAllDropDown': '@Resources.Pager.pagerAllDropDown'
+            }
+        }
+    });
+</script> 

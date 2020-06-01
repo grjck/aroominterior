@@ -1,0 +1,121 @@
+﻿@model ARoomInterior.Models.ExternalLoginConfirmationViewModel
+@{
+    ViewBag.Title = Resources.Register.Title;
+}
+
+<style>
+    .aimgback {
+        transition: .5s;
+        height: 40px;
+        width: 50px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    .aback:hover .aimgback {
+        transition: .5s;
+        height: 35px;
+        width: 55px;
+        margin-top: 2.5px;
+        margin-bottom: 2.5px;
+    }
+</style>
+<div class="row">
+    <a class="aback" href="/Account/Login" style=" height: 40px; width: 65px; margin-top: auto; margin-bottom: auto; margin-right: auto; margin-left: 10px; padding-right: 0px; padding-left: 0px; position: absolute">
+        <img class="aimgback" src="~/New/media-13-512.png" />
+    </a>
+    <h2 style="margin-left:60px">@ViewBag.Title.</h2>
+</div>
+<h4>@Resources.Register.ConnectMessage @ViewBag.LoginProvider</h4>
+<hr />
+
+@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { LoginProvider = ViewBag.LoginProvider, ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    if (ViewData.ModelState.Keys.Contains(""))
+    {
+        <div class="alert alert-dismissible alert-primary">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @Html.ValidationSummary(true, "")
+        </div>
+    }
+    <p class="alert alert-dismissible alert-success">
+        <strong>
+            @{ var link = "https://" + ViewBag.LoginProvider + ".com"; }
+            @Resources.Register.ConnectMessageSuccess <a class="alert-link" href="@link">@ViewBag.LoginProvider</a>
+        </strong><br />
+        @Resources.Register.ConnectMessageInfo.
+    </p>
+    <div class="row">
+        <div class="form-group col-md-6">
+            @Html.LabelFor(m => m.Email, new { @class = "form-control-label", style = "margin-left:10px" })
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @readonly = "" })
+        </div>
+        <div class="form-group col-md-6">
+            @Html.LabelFor(m => m.Name, new { @class = "form-control-label", style = "margin-left:10px" })
+            @if (ViewData.ModelState.Keys.Contains("Name"))
+            {
+                if (ViewData.ModelState["Name"].Errors.Count == 0)
+                {
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control is-valid" })
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control is-invalid" })
+                }
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "invalid-feedback" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Speciallization, new { @class = "col-md-2 form-control-label" })
+        @if (ViewData.ModelState.Keys.Contains("Speciallization"))
+        {
+            if (ViewData.ModelState["Speciallization"].Errors.Count == 0)
+            {
+                @Html.TextAreaFor(m => m.Speciallization, new { @class = "form-control is-valid col-md-12", style = "min-height:100px" })
+            }
+            else
+            {
+                @Html.TextAreaFor(m => m.Speciallization, new { @class = "form-control is-invalid col-md-12", style = "min-height:100px" })
+            }
+            @Html.ValidationMessageFor(m => m.Speciallization, "", new { @class = "invalid-feedback" })
+        }
+        else
+        {
+            @Html.TextAreaFor(m => m.Speciallization, new { @class = "form-control col-md-12", style = "min-height:100px" })
+        }
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Info, new { @class = "col-md-2 form-control-label" })
+        @if (ViewData.ModelState.Keys.Contains("Info"))
+        {
+            if (ViewData.ModelState["Info"].Errors.Count == 0)
+            {
+                @Html.TextAreaFor(m => m.Info, new { @class = "form-control is-valid col-md-12", style = "min-height:150px" })
+            }
+            else
+            {
+                @Html.TextAreaFor(m => m.Info, new { @class = "form-control is-invalid col-md-12", style = "min-height:100px" })
+            }
+            @Html.ValidationMessageFor(m => m.Info, "", new { @class = "invalid-feedback" })
+        }
+        else
+        {
+            @Html.TextAreaFor(m => m.Info, new { @class = "form-control col-md-12", style = "min-height:100px" })
+        }
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-primary" style="font-size:18px; width:150px" value=@Resources.Register.Submit />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

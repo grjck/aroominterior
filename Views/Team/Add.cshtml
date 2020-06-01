@@ -1,0 +1,97 @@
+@model ARoomInterior.Models.DB.Team
+
+@{
+    ViewBag.Title = Resources.Team.AddTitle;
+}
+<style>
+    .aimgback {
+        transition: .5s;
+        height: 40px;
+        width: 50px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    .aback:hover .aimgback {
+        transition: .5s;
+        height: 35px;
+        width: 55px;
+        margin-top: 2.5px;
+        margin-bottom: 2.5px;
+    }
+</style>
+<div class="row">
+    <a class="aback" href="/Team" style="height:40px; width:65px; margin-top:auto; margin-bottom:auto; margin-right:auto; margin-left:10px; padding-right:0px; padding-left:0px; position:absolute">
+        <img class="aimgback" src="~/New/media-13-512.png" />
+    </a>
+    <h2 style="margin-left:60px">@ViewBag.Title.</h2>
+</div>
+<h4>@Resources.Team.Message</h4>
+<hr />
+@using (Html.BeginForm("Add", "Team", new { }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @if (ViewData.ModelState.Keys.Contains(""))
+        {
+            <div class="alert alert-dismissible alert-primary">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                @Html.ValidationSummary(true, "")
+            </div>
+        }
+        <div class="form-group has-success has-danger">
+            @Html.LabelFor(model => model.Name, new { @class = "form-control-label", style = "margin-left:20px" })
+            <div class="col-md-10">
+                @if (ViewData.ModelState.Keys.Contains("Name"))
+                {
+                    if (ViewData.ModelState["Name"].Errors.Count == 0)
+                    {
+                        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control is-valid" } })
+                    }
+                    else
+                    {
+                        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control is-invalid" } })
+                    }
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "invalid-feedback" })
+                }
+                else
+                {
+                    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+                }
+            </div>
+        </div>
+
+        <div class="form-group has-success has-danger">
+            @Html.LabelFor(model => model.Description, new { @class = "form-control-label", style = "margin-left:20px" })
+            <div class="col-md-10">
+                @if (ViewData.ModelState.Keys.Contains("Description"))
+                {
+                    if (ViewData.ModelState["Description"].Errors.Count == 0)
+                    {
+                        @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control is-valid" } })
+                    }
+                    else
+                    {
+                        @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control is-invalid" } })
+                    }
+                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "invalid-feedback" })
+                }
+                else
+                {
+                    @Html.EditorFor(m => m.Description, new { htmlAttributes = new { @class = "form-control" } })
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@Resources.Projects.AddSubmit" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+@*<div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>*@

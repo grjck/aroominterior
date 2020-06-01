@@ -1,0 +1,146 @@
+@model ARoomInterior.Controllers.DetailTeamModel
+<style>
+    .aimgback {
+        transition: .5s;
+        height: 40px;
+        width: 50px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    .aback:hover .aimgback {
+        transition: .5s;
+        height: 35px;
+        width: 55px;
+        margin-top: 2.5px;
+        margin-bottom: 2.5px;
+    }
+</style>
+<div class="form-group row" style="margin-left:0px;">
+    <div class="col-md-9" style="padding-left:0px">
+        <div class="row">
+            <a class="aback" href="/Team" style="height:40px; width:65px; margin-top:auto; margin-bottom:auto; margin-right:auto; margin-left: 10px; padding-right:0px; padding-left:0px; position:absolute">
+                <img class="aimgback" src="~/New/media-13-512.png" />
+            </a>
+            <h2 style="margin-left:60px">@Resources.TeamDetail.Title.</h2>
+        </div>
+        <h4>@Resources.TeamDetail.Header</h4>
+    </div>
+    @if (Model.IsCustomer)
+    {
+        using (Html.BeginForm("Delete", "Team", new { selectedName = Model.Name }, FormMethod.Post, new { @class = "form-horizontal", role = "form", style = "margin-top:auto; margin-right:15px; margin-left:auto; display:block;" }))
+        {
+            @Html.AntiForgeryToken()
+            <input style="width:135px; margin-left:15px; font-size:17px;" type="submit" value=@Resources.TeamDetail.Delete class="btn btn-outline-primary" />
+        }
+    }
+</div>
+<hr />
+<div class="form-group row">
+    @if (Model.IsCustomer)
+    {
+        <div class="col-md-9">
+            @using (Html.BeginForm("Detail", "Team", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                if (ViewData.ModelState.Keys.Contains(""))
+                {
+                    <div class="alert alert-dismissible alert-primary">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        @Html.ValidationSummary(true, "")
+                    </div>
+                }
+                @Html.HiddenFor(m => m.IsCustomer);
+                @Html.HiddenFor(m => m.LastName);
+                @Html.HiddenFor(m => m.Customer);
+                <div class="form-group has-success has-danger">
+                    @Html.LabelFor(m => m.Name, new { @class = "form-control-label", style = "margin-left:20px" })
+                    <div class="col-md-10">
+                        @if (ViewData.ModelState.Keys.Contains("Name"))
+                        {
+                            if (ViewData.ModelState["Name"].Errors.Count == 0)
+                            {
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control is-valid" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control is-invalid" })
+                            }
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "invalid-feedback" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        }
+                    </div>
+                </div>
+                <div class="form-group has-success has-danger">
+                    @Html.LabelFor(m => m.Description, new { @class = "form-control-label", style = "margin-left:20px" })
+                    <div class="col-md-10">
+                        @if (ViewData.ModelState.Keys.Contains("Description"))
+                        {
+                            if (ViewData.ModelState["Description"].Errors.Count == 0)
+                            {
+                                @Html.TextBoxFor(m => m.Description, new { @class = "form-control is-valid" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.Description, new { @class = "form-control is-invalid" })
+                            }
+                            @Html.ValidationMessageFor(m => m.Description, "", new { @class = "invalid-feedback" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
+                        }
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Customer, new { @class = "form-control-label", style = "margin-left:20px" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Customer, new { @class = "form-control", disabled = "" })
+                    </div>
+                </div>
+                <input style="width:135px; margin-left:15px; font-size:17px" type="submit" value=@Resources.TeamDetail.Submit class="btn btn-primary" />
+            }
+        </div>
+        <div style="margin-right:15px; margin-left:auto; display:block;">
+            <div class="btn-group-vertical" style="width:200px; margin-right:15px">
+                <a href="/Team/TeamDetail?selectedName=@Model.Name" style="width:inherit; margin-left:15px; font-size:17px" class="btn btn-outline-info">@Resources.TeamDetail.Participants</a>
+                <a href="/Team/Invites?selectedName=@Model.Name" style="width:inherit; margin-left:15px; font-size:17px" class="btn btn-outline-info">@Resources.TeamDetail.Invites</a>
+                <a href="#" style="width:inherit; margin-left:15px; font-size:17px" class="btn btn-outline-info">@Resources.TeamDetail.Contract</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-9">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name, new { @class = "form-control-label", style = "margin-left:20px" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", disabled = "" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Description, new { @class = "form-control-label", style = "margin-left:20px" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control", disabled = "" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Customer, new { @class = "form-control-label", style = "margin-left:20px" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Customer, new { @class = "form-control", disabled = "" })
+                </div>
+            </div>
+        </div>
+        if (!Model.HasInvite)
+        {
+            <div style="margin-right:15px; margin-left:auto; display:block;">
+                <div class="btn-group-vertical" style="width:200px; margin-right:15px">
+                    <a href="/Team/SendInvite?selectedName=@Model.Name" style="width:inherit; margin-left:15px; font-size:17px" class="btn btn-outline-info">@Resources.TeamDetail.SendInvite</a>
+                </div>
+            </div>
+        }
+    }
+</div>

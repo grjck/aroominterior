@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = Resources.Projects.ModelTitle;
+}
+<style>
+    .aimgback {
+        transition: .5s;
+        height: 40px;
+        width: 50px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    .aback:hover .aimgback {
+        transition: .5s;
+        height: 35px;
+        width: 55px;
+        margin-top: 2.5px;
+        margin-bottom: 2.5px;
+    }
+</style>
+<div class="row">
+    <a class="aback" href="/Projects/Detail?selectedName=@ViewBag.selectedName" style=" height: 40px; width: 65px; margin-top: auto; margin-bottom: auto; margin-right: auto; margin-left: 10px; padding-right: 0px; padding-left: 0px; position: absolute">
+        <img class="aimgback" src="~/New/media-13-512.png" />
+    </a>
+    <h2 style="margin-left:60px">@ViewBag.Title.</h2>
+</div>
+<h4>@Resources.Projects.ModelMessage</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-5">
+        @Html.EJS().Grid("DataGrid").DataSource((IEnumerable<object>)ViewBag.dataSource).AllowResizing(true).AllowSorting().AllowFiltering().AllowExcelExport().Columns(col =>
+        {
+            col.Field("Name").HeaderText(Resources.Projects.ObjName).Add();
+            col.Field("Description").HeaderText(Resources.Projects.ObjDescription).Add();
+            col.Field("Preview").Visible(false).Add();
+        }).AllowPaging().PageSettings(page => page.PageCount(4).PageSizes(true)).Toolbar(new List<string>() { "Add", "ExcelExport", "Search" }).EditSettings(edit => { edit.AllowAdding(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal); }).Locale("grid").FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu); }).AllowSelection().SelectionSettings(select => select.Type(Syncfusion.EJ2.Grids.SelectionType.Single)).ToolbarClick("toolbarclick").Render()
+    </div>
+    <a class="col-md-7 list-group-item list-group-item-action flex-column align-items-start" style="margin:0px; padding:1px; border-radius:1%;" href="#">
+        <img src="~/New/1.jpg" style="height:inherit; width:inherit; margin-left:auto; display:block; border-radius: 1%;" />
+    </a>
+</div>
+
+<style>
+    .e-grid .e-pager .e-currentitem, .e-pager .e-currentitem:hover {
+        background-color: #EB6864;
+    }
+</style>
+
+<script>
+    function toolbarclick(args) {
+        if (args.item.id === this.element.id + '_excelexport') {
+            this.excelExport();
+        }
+        if (args.item.id === this.element.id + '_add') {
+            window.location.replace(window.location.origin + "/Projects/AddElement?selectedName=" + @Html.Raw(Json.Encode(ViewBag.selectedName)));
+        }
+    }
+    ej.base.L10n.load({
+        'grid': {
+            'grid': {
+                'EmptyRecord': '@Resources.Grid.EmptyRecord',
+                'GroupDropArea': '@Resources.Grid.GroupDropArea',
+                'UnGroup': '@Resources.Grid.UnGroup',
+                'EmptyDataSourceError': '@Resources.Grid.EmptyDataSourceError',
+                'Item': '@Resources.Grid.Item',
+                'Items': '@Resources.Grid.Items',
+                'Excelexport': 'Excel',
+                'FilterButton': '@Resources.Grid.FilterButton',
+                'ClearButton': '@Resources.Grid.ClearButton',
+                'StartsWith': '@Resources.Grid.StartsWith',
+                'EndsWith': '@Resources.Grid.EndsWith',
+                'Contains': '@Resources.Grid.Contains',
+                'Equal': '@Resources.Grid.Equal',
+                'NotEqual': '@Resources.Grid.NotEqual',
+                'LessThan': '@Resources.Grid.LessThan',
+                'LessThanOrEqual': '@Resources.Grid.LessThanOrEqual',
+                'GreaterThan': '@Resources.Grid.GreaterThan',
+                'GreaterThanOrEqual': '@Resources.Grid.GreaterThanOrEqual',
+                'EnterValue': '@Resources.Grid.EnterValue',
+                'Search': '@Resources.Grid.Search',
+                'Add': '@Resources.Grid.Create'
+            },
+            'pager': {
+                'currentPageInfo': '',
+                'totalItemsInfo': '',
+                'firstPageTooltip': '@Resources.Pager.firstPageTooltip',
+                'lastPageTooltip': '@Resources.Pager.lastPageTooltip',
+                'nextPageTooltip': '@Resources.Pager.nextPageTooltip',
+                'previousPageTooltip': '@Resources.Pager.previousPageTooltip',
+                'nextPagerTooltip': '@Resources.Pager.nextPagerTooltip',
+                'previousPagerTooltip': '@Resources.Pager.previousPagerTooltip',
+                'pagerDropDown': '',
+                'All': '@Resources.Pager.All',
+                'pagerAllDropDown': ''
+            }
+        }
+    });
+</script>

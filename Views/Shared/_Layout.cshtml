@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - @Resources._Layout.ProjectName</title>
+    <link href="~/asd.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/Scripts/ej2/ej2.min.js")
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/ej2/material.css")
+    <script>
+        var inner = document.querySelector('inner');
+        var ar = document.querySelector('ar');
+        var subtext = document.querySelector('subtext');
+
+        inner.addEventListener("webkitAnimationEnd", function () {
+            inner.classList.remove('start');
+            ar.classList.remove('start');
+            subtext.classList.remove('start');
+        });
+    </script>
+    <style>
+    @{ bool first = ViewContext.RouteData.Values.ContainsValue("Home"); }
+
+    .navbar {
+        z-index: 1;
+    }
+
+    html {
+        height: 100%;
+    }
+
+    body {
+        min-height: 100%;
+        position: relative;
+        padding-bottom: 55px
+    }
+
+    .footer {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 55px
+    }
+
+    .ar:before {
+        padding-left: 6px;
+        padding-right: 6px;
+        padding-bottom: 1px;
+        margin-right: 2px;
+        color: #EB6864;
+        font-size: 20px;
+        padding-right: 0px;
+    }
+
+    .ar {
+        transition: 0.5s;
+        color: #EB6864;
+        font-size: 20px;
+    }
+
+        .ar.start {
+            -webkit-animation: arstart ease-in .5s 1;
+        }
+
+    @{ string padd = first ? "0px" : "inherit"; }
+    @@-webkit-keyframes arstart {
+        from {
+            color: #EB6864;
+            font-size: 20px;
+            padding-right: @padd;
+        }
+
+        to {
+            padding-right: inherit;
+        }
+    }
+
+    .subtext {
+        transition: 0.7s;
+        color: white;
+        font-size: 15px;
+        margin-left: 10px
+    }
+
+        .subtext.start {
+            -webkit-animation: subtextstart ease-in .5s 1;
+        }
+
+    @{ string marg = first ? "0px" : "10px"; }
+    @{ string col = first ? "#EB6864" : "white"; }
+    @@-webkit-keyframes subtextstart {
+        from {
+            color: @col;
+            font-size: 15px;
+            margin-left: @marg
+        }
+
+        to {
+            color: white;
+            font-size: 15px;
+            margin-left: 10px;
+        }
+    }
+
+    .res:hover .ar {
+        transition: 0.7s;
+        padding-right: 0px;
+    }
+
+    .res:hover .subtext {
+        transition: 0.7s;
+        color: #EB6864;
+        margin-left: 0px
+    }
+
+    .res:hover .inner {
+        width: 120px;
+    }
+
+    .inner {
+        transition: width .5s;
+        margin-top: 13px;
+        width: 34px;
+        height: 35px;
+        background-color: white;
+        position: absolute;
+        top: 0;
+        box-shadow: 1px 1px 1px #777;
+        -moz-box-shadow: 1px 1px 1px #777;
+        -webkit-box-shadow: 1px 1px 1px #777;
+        z-index: -1;
+    }
+
+    inner.start {
+    }
+
+    .start {
+        -webkit-animation: innerstart ease-in .5s 1;
+    }
+
+    @{ string val = first ? "120px" : "34px"; }
+    @@-webkit-keyframes innerstart {
+        from {
+            width: @val;
+        }
+
+        to {
+            width: 34px;
+        }
+    }
+    </style>
+    <script src="~/Scripts/HomePage/all.js"></script>
+    <script src="~/Scripts/HomePage/custom.js"></script>
+    <script src="~/Scripts/HomePage/map.js"></script>
+    <script src="~/Scripts/HomePage/responsive-tabs.js"></script>
+    <link href="~/Content/Home/versions.css" rel="stylesheet" />
+    <link href="~/Content/Home/animate.css" rel="stylesheet" />
+    <link href="~/Content/Home/owl.carousel.css" rel="stylesheet" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a href="../" class="navbar-brand res">
+            <div class="inner start"></div>
+            <div style="z-index:100; margin-left:6px"><text class="ar start">AR</text><text class="subtext start">oomInterior</text></div>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item @if (ViewBag.Title == Resources.Projects.Title) { <text>active</text> }">@Html.ActionLink(Resources._Layout.Projects, "Index", "Projects", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item @if (ViewBag.Title == Resources.Team.Title) { <text>active</text> }">@Html.ActionLink(Resources._Layout.Team, "Index", "Team", new { area = "" }, new { @class = "nav-link" })</li>
+            </ul>
+            @Html.Partial("_LoginPartial")
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+        @RenderSection("SPAViews", required: false)
+        <footer class="footer">
+            <p class="text-secondary" style="text-align:right; margin-right:17px; margin-top:15px">&copy; @DateTime.Now.Year - @Resources._Layout.ProjectName</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("Scripts", required: false)
+    @Html.EJS().ScriptManager()
+</body>
+</html>

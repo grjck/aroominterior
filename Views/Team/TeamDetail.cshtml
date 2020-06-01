@@ -1,0 +1,96 @@
+@{
+    ViewBag.Title = Resources.TeamDetail.UsersTitle;
+}
+<style>
+    .aimgback {
+        transition: .5s;
+        height: 40px;
+        width: 50px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    .aback:hover .aimgback {
+        transition: .5s;
+        height: 35px;
+        width: 55px;
+        margin-top: 2.5px;
+        margin-bottom: 2.5px;
+    }
+</style>
+<div class="row">
+    <a class="aback" href="/Team/Detail?selectedName=@ViewBag.selectedName.ToString()" style=" height: 40px; width: 65px; margin-top: auto; margin-bottom: auto; margin-right: auto; margin-left: 10px; padding-right: 0px; padding-left: 0px; position: absolute">
+        <img class="aimgback" src="~/New/media-13-512.png" />
+    </a>
+    <h2 style="margin-left:60px">@ViewBag.Title.</h2>
+</div>
+<h4>@Resources.TeamDetail.Message</h4>
+<hr />
+@Html.EJS().Grid("DataGrid").DataSource((IEnumerable<object>)ViewBag.dataSource).AllowResizing(true).AllowSorting().AllowFiltering().AllowExcelExport().Columns(col =>
+{
+    col.Field("UserName").HeaderText(Resources.Projects.Name).Add();
+    col.Field("Email").HeaderText(Resources.ManageAccount.Email).Add();
+    col.Field("Speciallization").HeaderText(Resources.ManageAccount.Speciallization).Add();
+    col.Field("Info").HeaderText(Resources.ManageAccount.Info).Add();
+}).AllowPaging().PageSettings(page => page.PageCount(4).PageSizes(true)).Toolbar(new List<string>() { "Search", "ExcelExport" }).EditSettings(edit => { edit.AllowAdding(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal); }).Locale("grid").FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu); }).AllowSelection().SelectionSettings(select => select.Type(Syncfusion.EJ2.Grids.SelectionType.Single)).ToolbarClick("toolbarclick").RowSelected("rowSelected").Render()
+
+<style>
+    .e-grid .e-pager .e-currentitem, .e-pager .e-currentitem:hover {
+        background-color: #EB6864;
+    }
+</style>
+
+<script>
+    function toolbarclick(args) {
+        if (args.item.id === this.element.id + '_excelexport') {
+            this.excelExport();
+        }
+        if (args.item.id === this.element.id + '_add') {
+            window.location.replace(window.location.origin + "/Team/Invites");
+        }
+    }
+    function rowSelected(args) {
+        var grid = document.getElementById("DataGrid").ej2_instances[0];
+        window.location.replace(window.location.origin + "/Team/RemoveUser?selectedTeamName="+@Html.Raw(Json.Encode(ViewBag.selectedName))+"&selectedName=" + grid.getSelectedRecords()[0].UserName);
+    }
+    ej.base.L10n.load({
+        'grid': {
+            'grid': {
+                'EmptyRecord': '@Resources.Grid.EmptyRecord',
+                'GroupDropArea': '@Resources.Grid.GroupDropArea',
+                'UnGroup': '@Resources.Grid.UnGroup',
+                'EmptyDataSourceError': '@Resources.Grid.EmptyDataSourceError',
+                'Item': '@Resources.Grid.Item',
+                'Items': '@Resources.Grid.Items',
+                'Excelexport': '@Resources.Grid.Excelexport',
+                'FilterButton': '@Resources.Grid.FilterButton',
+                'ClearButton': '@Resources.Grid.ClearButton',
+                'StartsWith': '@Resources.Grid.StartsWith',
+                'EndsWith': '@Resources.Grid.EndsWith',
+                'Contains': '@Resources.Grid.Contains',
+                'Equal': '@Resources.Grid.Equal',
+                'NotEqual': '@Resources.Grid.NotEqual',
+                'LessThan': '@Resources.Grid.LessThan',
+                'LessThanOrEqual': '@Resources.Grid.LessThanOrEqual',
+                'GreaterThan': '@Resources.Grid.GreaterThan',
+                'GreaterThanOrEqual': '@Resources.Grid.GreaterThanOrEqual',
+                'EnterValue': '@Resources.Grid.EnterValue',
+                'Search': '@Resources.Grid.Search',
+                'Add': '@Resources.Grid.Create'
+            },
+            'pager': {
+                'currentPageInfo': '@Resources.Pager.currentPageInfo',
+                'totalItemsInfo': '@Resources.Pager.totalItemsInfo',
+                'firstPageTooltip': '@Resources.Pager.firstPageTooltip',
+                'lastPageTooltip': '@Resources.Pager.lastPageTooltip',
+                'nextPageTooltip': '@Resources.Pager.nextPageTooltip',
+                'previousPageTooltip': '@Resources.Pager.previousPageTooltip',
+                'nextPagerTooltip': '@Resources.Pager.nextPagerTooltip',
+                'previousPagerTooltip': '@Resources.Pager.previousPagerTooltip',
+                'pagerDropDown': '@Resources.Pager.pagerDropDown',
+                'All': '@Resources.Pager.All',
+                'pagerAllDropDown': '@Resources.Pager.pagerAllDropDown'
+            }
+        }
+    });
+</script>

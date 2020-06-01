@@ -1,0 +1,93 @@
+@using ARoomInterior.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = Resources.Login.Title;
+}
+
+<h2>@ViewBag.Title.</h2>
+<div class="row">
+    <div class="col-md-6">
+        <section id="loginForm">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h4>@Resources.Login.Header</h4>
+                <hr />
+
+                if (ViewData.ModelState.Keys.Contains(""))
+                {
+                    <div class="alert alert-dismissible alert-primary">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        @Html.ValidationSummary(true, "")
+                    </div>
+                }
+                <div class="form-group has-success has-danger">
+                    @Html.LabelFor(m => m.Name, new { @class = "form-control-label", style = "margin-left:20px" })
+                    <div class="col-md-10">
+                        @if (ViewData.ModelState.Keys.Contains("Name"))
+                        {
+                            if (ViewData.ModelState["Name"].Errors.Count == 0)
+                            {
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control is-valid" })
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control is-invalid" })
+                            }
+                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "invalid-feedback" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                        }
+                    </div>
+                </div>
+                <div class="form-group has-success has-danger">
+                    @Html.LabelFor(m => m.Password, new { @class = "form-control-label", style = "margin-left:20px" })
+                    <div class="col-md-10">
+                        @if (ViewData.ModelState.Keys.Contains("Password"))
+                        {
+                            if (ViewData.ModelState["Password"].Errors.Count == 0)
+                            {
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control is-valid" })
+                            }
+                            else
+                            {
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control is-invalid" })
+                            }
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "invalid-feedback" })
+                        }
+                        else
+                        {
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        }
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="custom-control custom-checkbox">
+                            @Html.CheckBoxFor(m => m.RememberMe, new { type = "checkbox", @class = "custom-control-input", @checked = "" })
+                            @Html.LabelFor(m => m.RememberMe, new { @class = "custom-control-label" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-left:0px">
+                    <input style="width:135px; margin-left:15px; font-size:17px" type="submit" value=@Resources.Login.Submit class="btn btn-primary" />
+                    <div style="margin-left:15px">
+                        @Html.ActionLink(Resources.Login.Register, "Register")<br />
+                        @Html.ActionLink(Resources.Login.ForgotPassword, "ForgotPassword")
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+    <div class="col-md-5">
+        <section id="socialLoginForm">
+            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

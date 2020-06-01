@@ -1,0 +1,40 @@
+﻿@model ARoomInterior.Models.ExternalLoginListViewModel
+
+@using Microsoft.Owin.Security
+
+<h4>@Resources.Login.ExternalLoginTitle</h4>
+<hr />
+@{
+    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+    if (loginProviders.Count() != 0)
+    {
+        using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl }))
+        {
+            @Html.AntiForgeryToken()
+            <div id="socialLoginList">
+                <div class="btn-group-vertical">
+                    @foreach (AuthenticationDescription p in loginProviders)
+                    {
+                        var imagePath = "Resources/" + p.AuthenticationType + ".png";
+                        @*@Html.EJS().Tooltip(p.Caption).Animation(new
+                            {
+                                open = new { effect = "FadeIn", duration = 700, delay = 0 },
+                                close = new { effect = "FadeOut", duration = 500, delay = 0 }
+                            }).CssClass("customtooltip").Position(Syncfusion.EJ2.Popups.Position.RightCenter).Content(Resources.Login.ExternalLoginTooltip + " " + p.Caption).ContentTemplate(*@
+                        <button type="submit" style="margin-left:15px; width:300px" class="btn btn-outline-primary" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType">
+                            <img src="~/@imagePath" style="height:45px; margin-right:15px" />
+                            <text style="font-size:18px; margin-left:-10px">@p.AuthenticationType account</text>
+                        </button>
+                        /*).Render()*/
+                    }
+                </div>
+            </div>
+        }
+    }
+}
+<style>
+    .customtooltip.e-tooltip-wrap .e-tip-content {
+        color: white;
+        font-size: 13px;
+    }
+</style>
