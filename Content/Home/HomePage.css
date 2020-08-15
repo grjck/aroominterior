@@ -1,11 +1,4 @@
-﻿.фыв {
-    position:absolute;
-    left: 0;
-    width: 100%;
-    height: 500px;
-}
-
-.fa-angle-left {
+﻿.fa-angle-left {
     margin-left: 20px;
 }
 
@@ -568,4 +561,73 @@ div.pp_overlay {
 .display-table-cell {
     display: table-cell;
     vertical-align: middle;
+}
+.web:hover .webanim {
+    -webkit-animation: webchange linear 3s infinite;
+}
+
+@-webkit-keyframes webchange {
+    to {
+        transform: rotateY(360deg);
+    }
+}
+
+.iot:hover .iotanim {
+    -webkit-animation: iotchange linear 2s infinite;
+}
+
+@-webkit-keyframes iotchange {
+    0% {
+        content: url(../../New/iot1.png);
+    }
+
+    33% {
+        content: url(../../New/iot2.png);
+    }
+
+    66% {
+        content: url(../../New/iot3.png);
+    }
+
+    100% {
+        content: url(../../New/iot1.png);
+    }
+}
+
+.robotanim {
+    -webkit-animation: robotchange linear 60s 1; /*43200s*/
+    animation-fill-mode: forwards;
+}
+
+.robot:hover .robotanim {
+    content: url(../../New/android-.png);
+    animation: none;
+}
+
+@-webkit-keyframes robotchange {
+    20% {
+        content: url(../../New/android2.png);
+    }
+
+    60% {
+        content: url(../../New/android3.png);
+    }
+
+    100% {
+        content: url(../../New/android4.png);
+    }
+}
+
+.colimage {
+    display: table;
+    margin: 0 auto;
+}
+
+.container {
+    width: 100% !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    margin: 0px !important;
+    align-self: center !important;
+    max-width: 100% !important;
 }

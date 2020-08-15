@@ -1,7 +1,47 @@
-﻿@{
+@{
     ViewBag.Title = Resources.Projects.ModelTitle;
 }
+<div class="form-group row" style="margin-left:0px;">
+    <div class="col-md-9" style="padding-left:0px">
+        <div class="row">
+            <a class="aback" href="/Projects/Detail?selectedName=@ViewBag.selectedName" style="height:40px; width:65px; margin-top:auto; margin-bottom:auto; margin-right:auto; margin-left: 10px; padding-right:0px; padding-left:0px; position:absolute">
+                <img class="aimgback" src="~/New/media-13-512.png" />
+            </a>
+            <h2 style="margin-left:60px">@ViewBag.Title.</h2>
+        </div>
+        <h4>@Resources.Projects.ModelMessage</h4>
+    </div>
+    @using (Html.BeginForm("ChangeRoomID", "Projects", new { selectedName = ViewBag.selectedName }, FormMethod.Post, new { @class = "btn-group", style = "margin-top:auto; margin-right:0px; margin-left:auto;" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="btn btn-outline-secondary js-copy-text-btn">
+            @ViewBag.roomID
+        </div>
+        <input class="btn btn-outline-success" type="submit" value="@Resources.Projects.Change" />
+    }
+</div>
+<hr style="margin-right:-15px;" />
+
+
+<div class="row">
+    <div class="col-md-5">
+        @Html.EJS().Grid("DataGrid").DataSource((IEnumerable<object>)ViewBag.dataSource).AllowResizing(true).AllowSorting().AllowFiltering().AllowExcelExport().Columns(col =>
+        {
+            col.Field("Name").HeaderText(Resources.Projects.ObjName).Add();
+            col.Field("Description").HeaderText(Resources.Projects.ObjDescription).Add();
+            col.Field("Preview").Visible(false).Add();
+        }).AllowPaging().PageSettings(page => page.PageCount(4).PageSizes(true)).Toolbar(new List<string>() { "Add", "ExcelExport", "Search" }).EditSettings(edit => { edit.AllowAdding(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal); }).Locale("grid").FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu); }).AllowSelection().SelectionSettings(select => select.Type(Syncfusion.EJ2.Grids.SelectionType.Single)).ToolbarClick("toolbarclick").Render()
+    </div>
+    <a class="col-md-7 list-group-item list-group-item-action flex-column align-items-start" style="margin: 0px; padding: 1px; border-radius: 1%;" href="#">
+        <img src="~/New/1.jpg" style="height:inherit; width:inherit; margin-left:auto; display:block; border-radius: 1%;" />
+    </a>
+</div>
+
 <style>
+    .e-grid .e-pager .e-currentitem, .e-pager .e-currentitem:hover {
+        background-color: #EB6864;
+    }
+
     .aimgback {
         transition: .5s;
         height: 40px;
@@ -16,34 +56,6 @@
         width: 55px;
         margin-top: 2.5px;
         margin-bottom: 2.5px;
-    }
-</style>
-<div class="row">
-    <a class="aback" href="/Projects/Detail?selectedName=@ViewBag.selectedName" style=" height: 40px; width: 65px; margin-top: auto; margin-bottom: auto; margin-right: auto; margin-left: 10px; padding-right: 0px; padding-left: 0px; position: absolute">
-        <img class="aimgback" src="~/New/media-13-512.png" />
-    </a>
-    <h2 style="margin-left:60px">@ViewBag.Title.</h2>
-</div>
-<h4>@Resources.Projects.ModelMessage</h4>
-<hr />
-
-<div class="row">
-    <div class="col-md-5">
-        @Html.EJS().Grid("DataGrid").DataSource((IEnumerable<object>)ViewBag.dataSource).AllowResizing(true).AllowSorting().AllowFiltering().AllowExcelExport().Columns(col =>
-        {
-            col.Field("Name").HeaderText(Resources.Projects.ObjName).Add();
-            col.Field("Description").HeaderText(Resources.Projects.ObjDescription).Add();
-            col.Field("Preview").Visible(false).Add();
-        }).AllowPaging().PageSettings(page => page.PageCount(4).PageSizes(true)).Toolbar(new List<string>() { "Add", "ExcelExport", "Search" }).EditSettings(edit => { edit.AllowAdding(true).Mode(Syncfusion.EJ2.Grids.EditMode.Normal); }).Locale("grid").FilterSettings(filter => { filter.Type(Syncfusion.EJ2.Grids.FilterType.Menu); }).AllowSelection().SelectionSettings(select => select.Type(Syncfusion.EJ2.Grids.SelectionType.Single)).ToolbarClick("toolbarclick").Render()
-    </div>
-    <a class="col-md-7 list-group-item list-group-item-action flex-column align-items-start" style="margin:0px; padding:1px; border-radius:1%;" href="#">
-        <img src="~/New/1.jpg" style="height:inherit; width:inherit; margin-left:auto; display:block; border-radius: 1%;" />
-    </a>
-</div>
-
-<style>
-    .e-grid .e-pager .e-currentitem, .e-pager .e-currentitem:hover {
-        background-color: #EB6864;
     }
 </style>
 
@@ -95,5 +107,45 @@
                 'pagerAllDropDown': ''
             }
         }
+    });
+    function fallbackCopyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+
+        // Avoid scrolling to bottom
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Fallback: Copying text command was ' + msg);
+        } catch (err) {
+            console.error('Fallback: Oops, unable to copy', err);
+        }
+
+        document.body.removeChild(textArea);
+    }
+    function copyTextToClipboard(text) {
+        if (!navigator.clipboard) {
+            fallbackCopyTextToClipboard(text);
+            return;
+        }
+        navigator.clipboard.writeText(text).then(function () {
+            console.log('Async: Copying to clipboard was successful!');
+        }, function (err) {
+            console.error('Async: Could not copy text: ', err);
+        });
+    }
+
+    var copyTextBtn = document.querySelector('.js-copy-text-btn');
+
+    copyTextBtn.addEventListener('click', function (event) {
+        copyTextToClipboard('@ViewBag.roomID');
     });
 </script>

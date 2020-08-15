@@ -30,7 +30,7 @@ namespace ARoomInterior.Models
         public DbSet<Project> Projects { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<ProjectLawInfo> ProjectLawInfos { get; set; }
-        public DbSet<ProjectElementObj> ProjectElementObjs { get; set; }
+        public DbSet<SpawnModel> SpawnModels { get; set; }
         public DbSet<ElementObj> ElementObjs { get; set; }
         public DbSet<Invite> Invites { get; set; }
 

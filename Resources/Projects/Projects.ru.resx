@@ -135,6 +135,9 @@
   <data name="AddTitle" xml:space="preserve">
     <value>Создать проект</value>
   </data>
+  <data name="Change" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
   <data name="Contract" xml:space="preserve">
     <value>Контракт</value>
   </data>

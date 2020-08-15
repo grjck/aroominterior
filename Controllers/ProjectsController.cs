@@ -1,12 +1,12 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Mvc;
+using System.Web.Security;
 using ARoomInterior.Models;
 using ARoomInterior.Models.DB;
 using Syncfusion.EJ2.Linq;
+using Newtonsoft.Json;
 
 namespace ARoomInterior.Controllers
 {
@@ -92,18 +92,65 @@ namespace ARoomInterior.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Model(string selectedName)
         {
-            //new Thread(() => GetTemp()).Start();
             GetTemp();
             ViewBag.selectedName = selectedName;
-            db.ProjectElementObjs.ToList();
+            db.SpawnModels.ToList();
             db.ElementObjs.ToList();
-            ViewBag.dataSource = db.Projects.FirstOrDefault(x => x.Name == selectedName).ElementObjects.Select(x => new { x.ElementObj.Name, x.ElementObj.Description, x.ElementObj.Preview }).ToList();
+            var proj = db.Projects.FirstOrDefault(x => x.Name == selectedName);
+            ViewBag.dataSource = proj.SpawnModels.Select(x => new { x.ElementObj.Name, x.ElementObj.Description, x.ElementObj.Preview }).ToList();
+            if (proj.RoomID == null || proj.RoomID == "")
+            {
+                proj.RoomID = GenerateRoomID();
+                db.SaveChangesAsync();
+            }
+            ViewBag.roomID = proj.RoomID;
             return View();
+        }
+
+        private string GenerateRoomID()
+        {
+            var roomID = Membership.GeneratePassword(10, 0);
+            return db.Projects.FirstOrDefault(x => x.RoomID == roomID) != null ? GenerateRoomID() : roomID;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangeRoomID(string selectedName)
+        {
+            db.Projects.FirstOrDefault(x => x.Name == selectedName).RoomID = GenerateRoomID();
+            db.SaveChanges();
+
+            return RedirectToAction("Model", "Projects", new { selectedName });
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public string GetRoomData(string roomID)
+        {
+            try
+            {
+                return JsonConvert.SerializeObject(db.Projects.FirstOrDefault(x => x.RoomID == roomID).SpawnModels.ToList());
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        public void SetRoomData(string roomID, string data)
+        {
+            try
+            {
+                db.Projects.FirstOrDefault(x => x.RoomID == roomID).SpawnModels = JsonConvert.DeserializeObject<List<SpawnModel>>(data);
+                db.SaveChangesAsync();
+            }
+            catch (Exception) { }
         }
 
         public ActionResult AddElement(string selectedName)
         {
-            if(selectedName == null)
+            if (selectedName == null)
                 return Redirect("/Projects");
             ViewBag.selectedName = selectedName;
             return View();
@@ -121,10 +168,10 @@ namespace ARoomInterior.Controllers
                 if (project == null)
                     return View();
                 element = db.ElementObjs.Add(element);
-                var d = db.ProjectElementObjs.Add(new ProjectElementObj { ElementObj = element, ElementObjElementId = element.ElementId });
-                project.ElementObjects.Add(d);
+                var d = db.SpawnModels.Add(new SpawnModel { ElementObj = element, ElementObjElementId = element.ElementId });
+                project.SpawnModels.Add(d);
                 db.SaveChanges();
-                return RedirectToAction("Detail", "Projects", new { selectedName = selectedName });
+                return RedirectToAction("Detail", "Projects", new { selectedName });
             }
             catch { }
             return View();
@@ -141,7 +188,6 @@ namespace ARoomInterior.Controllers
                     port.Close();
             }
             catch { }
-
         }
 
         public void SendTemp(string tempstr)

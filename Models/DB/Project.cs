@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Drawing;
 
 namespace ARoomInterior.Models.DB
 {
@@ -15,6 +14,7 @@ namespace ARoomInterior.Models.DB
         [Display(Name = nameof(Resources.Projects.Description), ResourceType = typeof(Resources.Projects))]
         public string Description { get; set; }
         public string Preview { get; set; }
+        public string RoomID { get; set; }
 
         public string CustomerId { get; set; }
         public ApplicationUser Customer { get; set; }
@@ -25,11 +25,11 @@ namespace ARoomInterior.Models.DB
         public string LawInfoContractNumber { get; set; }
         public ProjectLawInfo LawInfo { get; set; }
 
-        public ICollection<ProjectElementObj> ElementObjects { get; set; }
+        public ICollection<SpawnModel> SpawnModels { get; set; }
 
         public Project()
         {
-            ElementObjects = new List<ProjectElementObj>();
+            SpawnModels = new List<SpawnModel>();
         }
     }
 }
